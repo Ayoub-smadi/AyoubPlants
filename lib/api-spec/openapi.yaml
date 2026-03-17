@@ -1,22 +1,33 @@
 openapi: 3.1.0
 info:
-  # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: Agricultural Nursery Management System API
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
+  - name: auth
+    description: Authentication operations
+  - name: plants
+    description: Plant management
+  - name: categories
+    description: Category management
+  - name: orders
+    description: Order management
+  - name: users
+    description: User management
+  - name: reports
+    description: Sales reports and statistics
+
 paths:
   /healthz:
     get:
       operationId: healthCheck
       tags: [health]
       summary: Health check
-      description: Returns server health status
       responses:
         "200":
           description: Healthy
@@ -24,7 +35,477 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  /auth/register:
+    post:
+      operationId: register
+      tags: [auth]
+      summary: Register a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RegisterRequest"
+      responses:
+        "201":
+          description: User registered
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthResponse"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "409":
+          description: User already exists
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /auth/login:
+    post:
+      operationId: login
+      tags: [auth]
+      summary: Login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginRequest"
+      responses:
+        "200":
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthResponse"
+        "401":
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /auth/me:
+    get:
+      operationId: getMe
+      tags: [auth]
+      summary: Get current user
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Current user
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /categories:
+    get:
+      operationId: getCategories
+      tags: [categories]
+      summary: Get all categories
+      responses:
+        "200":
+          description: List of categories
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Category"
+
+    post:
+      operationId: createCategory
+      tags: [categories]
+      summary: Create a category (Admin only)
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateCategoryRequest"
+      responses:
+        "201":
+          description: Category created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Category"
+
+  /categories/{id}:
+    put:
+      operationId: updateCategory
+      tags: [categories]
+      summary: Update a category (Admin only)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateCategoryRequest"
+      responses:
+        "200":
+          description: Category updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Category"
+
+    delete:
+      operationId: deleteCategory
+      tags: [categories]
+      summary: Delete a category (Admin only)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Category deleted
+
+  /plants:
+    get:
+      operationId: getPlants
+      tags: [plants]
+      summary: Get all plants with optional filtering
+      parameters:
+        - name: search
+          in: query
+          schema:
+            type: string
+        - name: categoryId
+          in: query
+          schema:
+            type: integer
+        - name: minPrice
+          in: query
+          schema:
+            type: number
+        - name: maxPrice
+          in: query
+          schema:
+            type: number
+        - name: minHeight
+          in: query
+          schema:
+            type: number
+        - name: maxHeight
+          in: query
+          schema:
+            type: number
+        - name: available
+          in: query
+          schema:
+            type: boolean
+      responses:
+        "200":
+          description: List of plants
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Plant"
+
+    post:
+      operationId: createPlant
+      tags: [plants]
+      summary: Create a plant (Admin only)
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreatePlantRequest"
+      responses:
+        "201":
+          description: Plant created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Plant"
+
+  /plants/{id}:
+    get:
+      operationId: getPlant
+      tags: [plants]
+      summary: Get a plant by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Plant details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Plant"
+        "404":
+          description: Plant not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+    put:
+      operationId: updatePlant
+      tags: [plants]
+      summary: Update a plant (Admin only)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreatePlantRequest"
+      responses:
+        "200":
+          description: Plant updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Plant"
+
+    delete:
+      operationId: deletePlant
+      tags: [plants]
+      summary: Delete a plant (Admin only)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Plant deleted
+
+  /plants/{id}/stock:
+    patch:
+      operationId: updatePlantStock
+      tags: [plants]
+      summary: Update plant stock (Admin only)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateStockRequest"
+      responses:
+        "200":
+          description: Stock updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Plant"
+
+  /orders:
+    get:
+      operationId: getOrders
+      tags: [orders]
+      summary: Get orders (Admin gets all, Customer gets own)
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: List of orders
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Order"
+
+    post:
+      operationId: createOrder
+      tags: [orders]
+      summary: Create an order
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateOrderRequest"
+      responses:
+        "201":
+          description: Order created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Order"
+
+  /orders/{id}:
+    get:
+      operationId: getOrder
+      tags: [orders]
+      summary: Get an order by ID
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Order details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Order"
+
+    patch:
+      operationId: updateOrderStatus
+      tags: [orders]
+      summary: Update order status (Admin only)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateOrderStatusRequest"
+      responses:
+        "200":
+          description: Order updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Order"
+
+  /reports/summary:
+    get:
+      operationId: getReportSummary
+      tags: [reports]
+      summary: Get sales summary statistics (Admin only)
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Report summary
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportSummary"
+
+  /reports/daily:
+    get:
+      operationId: getDailySales
+      tags: [reports]
+      summary: Get daily sales for the last 30 days (Admin only)
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Daily sales data
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/DailySales"
+
+  /reports/top-plants:
+    get:
+      operationId: getTopPlants
+      tags: [reports]
+      summary: Get most sold plants (Admin only)
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Top plants
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/TopPlant"
+
+  /users:
+    get:
+      operationId: getUsers
+      tags: [users]
+      summary: Get all users (Admin only)
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: List of users
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/User"
+
 components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
   schemas:
     HealthStatus:
       type: object
@@ -34,3 +515,384 @@ components:
       required:
         - status
 
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+        message:
+          type: string
+      required:
+        - error
+        - message
+
+    RegisterRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+        phone:
+          type: string
+      required:
+        - name
+        - email
+        - password
+
+    LoginRequest:
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+      required:
+        - email
+        - password
+
+    AuthResponse:
+      type: object
+      properties:
+        token:
+          type: string
+        user:
+          $ref: "#/components/schemas/User"
+      required:
+        - token
+        - user
+
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+          nullable: true
+        role:
+          type: string
+          enum: [admin, customer]
+        createdAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - name
+        - email
+        - role
+        - createdAt
+
+    Category:
+      type: object
+      properties:
+        id:
+          type: integer
+        nameAr:
+          type: string
+        nameEn:
+          type: string
+        description:
+          type: string
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - nameAr
+        - nameEn
+        - createdAt
+
+    CreateCategoryRequest:
+      type: object
+      properties:
+        nameAr:
+          type: string
+        nameEn:
+          type: string
+        description:
+          type: string
+      required:
+        - nameAr
+        - nameEn
+
+    Plant:
+      type: object
+      properties:
+        id:
+          type: integer
+        nameAr:
+          type: string
+        nameEn:
+          type: string
+        categoryId:
+          type: integer
+          nullable: true
+        category:
+          $ref: "#/components/schemas/Category"
+          nullable: true
+        descriptionAr:
+          type: string
+          nullable: true
+        descriptionEn:
+          type: string
+          nullable: true
+        height:
+          type: number
+          nullable: true
+        price:
+          type: number
+        stockQuantity:
+          type: integer
+        imageUrl:
+          type: string
+          nullable: true
+        images:
+          type: array
+          items:
+            type: string
+        featured:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - nameAr
+        - nameEn
+        - price
+        - stockQuantity
+        - featured
+        - images
+        - createdAt
+        - updatedAt
+
+    CreatePlantRequest:
+      type: object
+      properties:
+        nameAr:
+          type: string
+        nameEn:
+          type: string
+        categoryId:
+          type: integer
+        descriptionAr:
+          type: string
+        descriptionEn:
+          type: string
+        height:
+          type: number
+        price:
+          type: number
+        stockQuantity:
+          type: integer
+        imageUrl:
+          type: string
+        images:
+          type: array
+          items:
+            type: string
+        featured:
+          type: boolean
+      required:
+        - nameAr
+        - nameEn
+        - price
+        - stockQuantity
+
+    UpdateStockRequest:
+      type: object
+      properties:
+        stockQuantity:
+          type: integer
+      required:
+        - stockQuantity
+
+    OrderItem:
+      type: object
+      properties:
+        id:
+          type: integer
+        plantId:
+          type: integer
+        plant:
+          $ref: "#/components/schemas/Plant"
+          nullable: true
+        quantity:
+          type: integer
+        unitPrice:
+          type: number
+        totalPrice:
+          type: number
+      required:
+        - id
+        - plantId
+        - quantity
+        - unitPrice
+        - totalPrice
+
+    Order:
+      type: object
+      properties:
+        id:
+          type: integer
+        userId:
+          type: integer
+          nullable: true
+        user:
+          $ref: "#/components/schemas/User"
+          nullable: true
+        customerName:
+          type: string
+        customerPhone:
+          type: string
+        customerAddress:
+          type: string
+        status:
+          type: string
+          enum: [pending, confirmed, processing, shipped, delivered, cancelled]
+        totalAmount:
+          type: number
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/OrderItem"
+        notes:
+          type: string
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - customerName
+        - customerPhone
+        - customerAddress
+        - status
+        - totalAmount
+        - items
+        - createdAt
+        - updatedAt
+
+    CreateOrderRequest:
+      type: object
+      properties:
+        customerName:
+          type: string
+        customerPhone:
+          type: string
+        customerAddress:
+          type: string
+        notes:
+          type: string
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/OrderItemInput"
+      required:
+        - customerName
+        - customerPhone
+        - customerAddress
+        - items
+
+    OrderItemInput:
+      type: object
+      properties:
+        plantId:
+          type: integer
+        quantity:
+          type: integer
+      required:
+        - plantId
+        - quantity
+
+    UpdateOrderStatusRequest:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [pending, confirmed, processing, shipped, delivered, cancelled]
+      required:
+        - status
+
+    ReportSummary:
+      type: object
+      properties:
+        totalRevenue:
+          type: number
+        todayRevenue:
+          type: number
+        monthRevenue:
+          type: number
+        totalOrders:
+          type: number
+        todayOrders:
+          type: number
+        monthOrders:
+          type: number
+        totalPlants:
+          type: number
+        lowStockPlants:
+          type: number
+        totalCustomers:
+          type: number
+      required:
+        - totalRevenue
+        - todayRevenue
+        - monthRevenue
+        - totalOrders
+        - todayOrders
+        - monthOrders
+        - totalPlants
+        - lowStockPlants
+        - totalCustomers
+
+    DailySales:
+      type: object
+      properties:
+        date:
+          type: string
+        revenue:
+          type: number
+        orders:
+          type: integer
+      required:
+        - date
+        - revenue
+        - orders
+
+    TopPlant:
+      type: object
+      properties:
+        plantId:
+          type: integer
+        nameAr:
+          type: string
+        nameEn:
+          type: string
+        totalSold:
+          type: integer
+        totalRevenue:
+          type: number
+        imageUrl:
+          type: string
+          nullable: true
+      required:
+        - plantId
+        - nameAr
+        - nameEn
+        - totalSold
+        - totalRevenue

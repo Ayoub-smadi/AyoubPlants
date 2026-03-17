@@ -1,0 +1,22 @@
+packages:
+  "recharts": "For rendering beautiful sales and analytics charts in the admin dashboard"
+  "framer-motion": "For page transitions and micro-animations"
+  "react-hook-form": "For robust form state management"
+  "@hookform/resolvers": "For zod schema validation integration with react-hook-form"
+  "zod": "For runtime type validation of forms"
+  "date-fns": "For elegant date formatting across the app"
+  "zustand": "For simple, reliable global state management for the shopping cart"
+  "lucide-react": "For UI icons"
+
+images:
+  - path: "artifacts/nursery/public/images/hero-bg.png"
+    description: "Beautiful lush green agricultural nursery greenhouse interior with sunlight streaming softly through tropical plant leaves, highly detailed, realistic, 4k, cinematic lighting, professional photography"
+    aspect_ratio: "16:9"
+  - path: "artifacts/nursery/public/images/logo-icon.png"
+    description: "Minimalist elegant leaf and small plant sprout icon for a premium agricultural nursery logo, clean vector style, solid forest green on transparent background"
+    aspect_ratio: "1:1"
+
+notes:
+  - "Assuming @workspace/api-client-react is available and configured to handle auth headers automatically if a token exists in localStorage or cookies."
+  - "Using wouter for routing."
+  - "Implementing full Arabic/English i18n support with RTL layout adjusting automatically based on selected language."

@@ -1,0 +1,131 @@
+Create a modern full web application for an **Agricultural Nursery Management System**.
+
+Technology Stack:
+
+* Frontend: Angular
+* Backend: ASP.NET Core Web API
+* Database: PostgreSQL or SQL Server
+* Authentication: JWT
+* UI Framework: Bootstrap
+
+The website must support:
+
+* Arabic and English languages (language switcher)
+* Dark Mode and Light Mode toggle
+* Responsive design for mobile and desktop
+
+Main Pages:
+
+1. **Home Page**
+
+* Introduction to the nursery
+* Featured plants
+* Categories section
+* Call-to-action button for viewing plants
+
+2. **Plants Page**
+   Display all plants available in the nursery.
+
+Each plant card should include:
+
+* Plant Image
+* Arabic Name
+* English Name
+* Category
+* Height / Size
+* Price
+* Stock availability
+* Short description
+* "Order Now" button
+
+3. **Plant Filtering**
+   Allow users to filter plants by:
+
+* Category (Trees, Flowers, Shrubs, Indoor Plants)
+* Height
+* Price range
+* Availability
+
+4. **Purchase Order System**
+   Users can place an order.
+
+Order form should include:
+
+* Customer Name
+* Phone Number
+* Address
+* Selected Plants
+* Quantity
+* Total Price Calculation
+
+5. **Admin Dashboard**
+   Admin should be able to:
+
+Plant Management:
+
+* Add plant
+* Edit plant
+* Delete plant
+* Upload plant image
+
+Inventory Management:
+
+* Update stock quantity
+* Track available plants
+
+Orders Management:
+
+* View customer orders
+* Update order status
+* Order history
+
+6. **Sales Reports**
+   Dashboard should show:
+
+* Daily sales
+* Monthly sales
+* Most sold plants
+* Total revenue
+* Charts and statistics
+
+7. **Navbar**
+   Professional responsive navigation bar including:
+
+* Logo
+* Home
+* Plants
+* Categories
+* Orders
+* Dashboard (Admin only)
+* Language Switch (Arabic / English)
+* Dark Mode Toggle
+* Login / Register
+
+8. **Search Function**
+   Users can search for plants by name.
+
+9. **User Roles**
+   Two roles:
+
+Admin:
+
+* Manage plants
+* Manage orders
+* View reports
+* Manage inventory
+
+Customer:
+
+* Browse plants
+* Filter plants
+* Place orders
+* View order history
+
+10. **Extra Features**
+
+* Plant image gallery
+* Dashboard statistics
+* Mobile responsive design
+* Clean UI design
+* Secure API with JWT authentication
+* MVC architecture (Controllers, Services, Repositories)
