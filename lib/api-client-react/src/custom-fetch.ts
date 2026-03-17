@@ -271,6 +271,17 @@ async function parseSuccessBody(
   }
 }
 
+function getAuthToken(): string | null {
+  try {
+    const raw = localStorage.getItem("nursery-auth");
+    if (!raw) return null;
+    const parsed = JSON.parse(raw);
+    return parsed?.state?.token ?? null;
+  } catch {
+    return null;
+  }
+}
+
 export async function customFetch<T = unknown>(
   input: RequestInfo | URL,
   options: CustomFetchOptions = {},
@@ -284,6 +295,11 @@ export async function customFetch<T = unknown>(
   }
 
   const headers = mergeHeaders(isRequest(input) ? input.headers : undefined, headersInit);
+
+  const token = getAuthToken();
+  if (token && !headers.has("authorization")) {
+    headers.set("authorization", `Bearer ${token}`);
+  }
 
   if (
     typeof init.body === "string" &&

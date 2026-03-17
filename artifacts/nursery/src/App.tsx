@@ -16,6 +16,7 @@ import Register from "./pages/Register";
 import AdminDashboard from "./pages/admin/Dashboard";
 import AdminPlants from "./pages/admin/Plants";
 import AdminOrders from "./pages/admin/Orders";
+import AdminCategories from "./pages/admin/Categories";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -44,7 +45,7 @@ function Router() {
       <Route path="/admin" component={AdminDashboard} />
       <Route path="/admin/plants" component={AdminPlants} />
       <Route path="/admin/orders" component={AdminOrders} />
-      {/* Fallback to Dashboard for undefined admin routes for now */}
+      <Route path="/admin/categories" component={AdminCategories} />
       <Route path="/admin/:rest*" component={AdminDashboard} />
 
       <Route component={NotFound} />
