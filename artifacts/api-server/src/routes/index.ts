@@ -6,6 +6,7 @@ import plantsRouter from "./plants.js";
 import ordersRouter from "./orders.js";
 import reportsRouter from "./reports.js";
 import usersRouter from "./users.js";
+import storageRouter from "./storage.js";
 
 const router = Router();
 
@@ -16,5 +17,6 @@ router.use("/plants", plantsRouter);
 router.use("/orders", ordersRouter);
 router.use("/reports", reportsRouter);
 router.use("/users", usersRouter);
+router.use("/storage", storageRouter);
 
 export default router;
