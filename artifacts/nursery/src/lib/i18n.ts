@@ -80,6 +80,8 @@ const translations = {
     addPlant: "Add New Plant",
     editPlant: "Edit Plant",
     addCategory: "Add Category",
+    priceQuotes: "Price Quotes",
+    manageQuotes: "Price Quotes",
   },
   ar: {
     // Navigation
@@ -151,6 +153,8 @@ const translations = {
     addPlant: "إضافة نبتة جديدة",
     editPlant: "تعديل نبتة",
     addCategory: "إضافة فئة",
+    priceQuotes: "عروض الأسعار",
+    manageQuotes: "عروض الأسعار",
   }
 };
 

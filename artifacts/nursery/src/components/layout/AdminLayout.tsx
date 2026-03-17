@@ -8,16 +8,18 @@ import {
   Tags, 
   BarChart3, 
   LogOut,
-  Settings
+  Settings,
+  FileText
 } from "lucide-react";
 import { useI18n } from "@/lib/i18n";
 import { ThemeToggle } from "./ThemeToggle";
 
 const navItems = [
-  { href: "/admin", icon: LayoutDashboard, label: "Dashboard" },
-  { href: "/admin/plants", icon: Leaf, label: "Plants" },
-  { href: "/admin/orders", icon: ShoppingCart, label: "Orders" },
-  { href: "/admin/categories", icon: Tags, label: "Categories" },
+  { href: "/admin", icon: LayoutDashboard, labelEn: "Dashboard", labelAr: "لوحة التحكم" },
+  { href: "/admin/plants", icon: Leaf, labelEn: "Plants", labelAr: "النباتات" },
+  { href: "/admin/orders", icon: ShoppingCart, labelEn: "Orders", labelAr: "الطلبات" },
+  { href: "/admin/categories", icon: Tags, labelEn: "Categories", labelAr: "الفئات" },
+  { href: "/admin/quotes", icon: FileText, labelEn: "Price Quotes", labelAr: "عروض الأسعار" },
 ];
 
 export function AdminLayout({ children }: { children: ReactNode }) {
@@ -47,7 +49,7 @@ export function AdminLayout({ children }: { children: ReactNode }) {
         <nav className="flex-1 px-4 py-6 space-y-2">
           {navItems.map((item) => {
             const Icon = item.icon;
-            const isActive = location === item.href;
+            const isActive = location === item.href || (item.href !== '/admin' && location.startsWith(item.href));
             return (
               <Link 
                 key={item.href} 
@@ -59,7 +61,7 @@ export function AdminLayout({ children }: { children: ReactNode }) {
                 }`}
               >
                 <Icon className="h-5 w-5" />
-                {item.label}
+                {lang === 'ar' ? item.labelAr : item.labelEn}
               </Link>
             );
           })}

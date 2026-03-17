@@ -34,6 +34,9 @@ export function Navbar() {
       <Link href="/plants" className={`font-medium transition-colors hover:text-primary ${location === '/plants' ? 'text-primary' : 'text-foreground/80'}`}>
         {t('plants')}
       </Link>
+      <Link href="/quotes" className={`font-medium transition-colors hover:text-primary ${location === '/quotes' ? 'text-primary' : 'text-foreground/80'}`}>
+        {t('priceQuotes')}
+      </Link>
       {user && (
         <Link href="/orders" className={`font-medium transition-colors hover:text-primary ${location === '/orders' ? 'text-primary' : 'text-foreground/80'}`}>
           {t('myOrders')}

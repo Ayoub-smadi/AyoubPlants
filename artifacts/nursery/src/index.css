@@ -253,3 +253,15 @@
     inset: -1px;
   }
 }
+
+@media print {
+  body * { visibility: hidden; }
+  header, nav, aside, .print\:hidden { display: none !important; }
+  main { padding: 0 !important; margin: 0 !important; }
+  .hidden.print\:block { display: block !important; visibility: visible; }
+  [class*="print:hidden"] { display: none !important; }
+  [class*="print:block"] { display: block !important; }
+  [class*="rounded"] { border-radius: 0 !important; }
+  * { visibility: visible; }
+  @page { margin: 0; size: A4; }
+}

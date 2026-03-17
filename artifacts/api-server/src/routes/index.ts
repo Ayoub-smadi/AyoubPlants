@@ -8,6 +8,7 @@ import reportsRouter from "./reports.js";
 import usersRouter from "./users.js";
 import storageRouter from "./storage.js";
 import uploadRouter from "./upload.js";
+import quotesRouter from "./quotes.js";
 
 const router = Router();
 
@@ -20,5 +21,6 @@ router.use("/reports", reportsRouter);
 router.use("/users", usersRouter);
 router.use("/storage", storageRouter);
 router.use("/", uploadRouter);
+router.use("/quotes", quotesRouter);
 
 export default router;

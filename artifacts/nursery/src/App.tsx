@@ -17,6 +17,11 @@ import AdminDashboard from "./pages/admin/Dashboard";
 import AdminPlants from "./pages/admin/Plants";
 import AdminOrders from "./pages/admin/Orders";
 import AdminCategories from "./pages/admin/Categories";
+import AdminQuotes from "./pages/admin/Quotes";
+import QuoteDetail from "./pages/admin/QuoteDetail";
+
+// Customer Pages
+import QuotesPage from "./pages/Quotes";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -35,6 +40,7 @@ function Router() {
       <Route path="/plants" component={Plants} />
       <Route path="/plants/:id" component={PlantDetail} />
       <Route path="/order" component={OrderPage} />
+      <Route path="/quotes" component={QuotesPage} />
       <Route path="/login" component={Login} />
       <Route path="/register" component={Register} />
       
@@ -46,6 +52,8 @@ function Router() {
       <Route path="/admin/plants" component={AdminPlants} />
       <Route path="/admin/orders" component={AdminOrders} />
       <Route path="/admin/categories" component={AdminCategories} />
+      <Route path="/admin/quotes" component={AdminQuotes} />
+      <Route path="/admin/quotes/:id" component={QuoteDetail} />
       <Route path="/admin/:rest*" component={AdminDashboard} />
 
       <Route component={NotFound} />
