@@ -22,6 +22,7 @@ import QuoteDetail from "./pages/admin/QuoteDetail";
 
 // Customer Pages
 import QuotesPage from "./pages/Quotes";
+import MyOrders from "./pages/MyOrders";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -44,8 +45,8 @@ function Router() {
       <Route path="/login" component={Login} />
       <Route path="/register" component={Register} />
       
-      {/* Customer Routes (can share UI with public, or have specific views) */}
-      {/* <Route path="/orders" component={MyOrders} /> */}
+      {/* Customer Routes */}
+      <Route path="/orders" component={MyOrders} />
       
       {/* Admin Routes */}
       <Route path="/admin" component={AdminDashboard} />
