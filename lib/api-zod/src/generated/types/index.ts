@@ -23,6 +23,8 @@ export * from "./orderStatus";
 export * from "./plant";
 export * from "./registerRequest";
 export * from "./reportSummary";
+export * from "./requestUploadUrlBody";
+export * from "./requestUploadUrlResponse";
 export * from "./topPlant";
 export * from "./updateOrderStatusRequest";
 export * from "./updateOrderStatusRequestStatus";

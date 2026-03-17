@@ -568,6 +568,20 @@ export const GetTopPlantsResponseItem = zod.object({
 export const GetTopPlantsResponse = zod.array(GetTopPlantsResponseItem);
 
 /**
+ * @summary Request a presigned upload URL
+ */
+export const RequestUploadUrlBody = zod.object({
+  name: zod.string(),
+  size: zod.number(),
+  contentType: zod.string(),
+});
+
+export const RequestUploadUrlResponse = zod.object({
+  uploadURL: zod.string(),
+  objectPath: zod.string(),
+});
+
+/**
  * @summary Get all users (Admin only)
  */
 export const GetUsersResponseItem = zod.object({

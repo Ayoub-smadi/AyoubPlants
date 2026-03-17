@@ -188,6 +188,17 @@ export interface TopPlant {
   imageUrl?: string | null;
 }
 
+export interface RequestUploadUrlBody {
+  name: string;
+  size: number;
+  contentType: string;
+}
+
+export interface RequestUploadUrlResponse {
+  uploadURL: string;
+  objectPath: string;
+}
+
 export type GetPlantsParams = {
   search?: string;
   categoryId?: number;
