@@ -1,6 +1,6 @@
 kind = "web"
 previewPath = "/"
-title = "Agricultural Nursery Management System"
+title = "Al Rawdah - Agricultural Nursery"
 version = "1.0.0"
 id = "artifacts/nursery"
 router = "path"
