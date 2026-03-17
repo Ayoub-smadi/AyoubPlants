@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { AdminLayout } from "@/components/layout/AdminLayout";
 import { useRoute, useLocation } from "wouter";
 import { Card } from "@/components/ui/card";
@@ -59,12 +59,12 @@ export default function QuoteDetail() {
 
   const [editedItems, setEditedItems] = useState<QuoteItem[] | null>(null);
   const [adminNotes, setAdminNotes] = useState<string>("");
-  const [notesInitialized, setNotesInitialized] = useState(false);
 
-  if (quote && !notesInitialized) {
-    setAdminNotes(quote.adminNotes || "");
-    setNotesInitialized(true);
-  }
+  useEffect(() => {
+    if (quote) {
+      setAdminNotes(quote.adminNotes || "");
+    }
+  }, [quote?.id]);
 
   const items = editedItems ?? quote?.items ?? [];
   const total = items.reduce((s, i) => s + i.unitPrice * i.quantity, 0);
