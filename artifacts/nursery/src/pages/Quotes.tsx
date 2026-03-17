@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { useGetPlants } from "@workspace/api-client-react";
 import { useI18n } from "@/lib/i18n";
@@ -8,8 +8,9 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/hooks/use-toast";
-import { FileText, Plus, Minus, Trash2, Send, Search, CheckCircle2 } from "lucide-react";
+import { FileText, Plus, Minus, Trash2, Send, Search } from "lucide-react";
 import { useAuthStore } from "@/lib/store";
+import { useLocation } from "wouter";
 
 interface QuoteItem {
   plantId: number;
@@ -25,13 +26,13 @@ export default function QuotesPage() {
   const isRtl = lang === "ar";
   const { toast } = useToast();
   const { token } = useAuthStore();
+  const [, setLocation] = useLocation();
 
   const { data: plants, isLoading } = useGetPlants({});
   const [search, setSearch] = useState("");
   const [quoteItems, setQuoteItems] = useState<QuoteItem[]>([]);
   const [customerName, setCustomerName] = useState("");
   const [customerPhone, setCustomerPhone] = useState("");
-  const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
   const filteredPlants = (plants || []).filter((p) => {
@@ -109,39 +110,14 @@ export default function QuotesPage() {
         }),
       });
       if (!res.ok) throw new Error("Failed");
-      setSubmitted(true);
-      setQuoteItems([]);
-      setCustomerName("");
-      setCustomerPhone("");
+      const data = await res.json();
+      setLocation(`/quotes/${data.id}`);
     } catch {
       toast({ title: lang === "ar" ? "فشل إرسال الطلب" : "Failed to send quote request", variant: "destructive" });
     } finally {
       setSubmitting(false);
     }
   };
-
-  if (submitted) {
-    return (
-      <MainLayout>
-        <div className="container mx-auto px-4 py-20 flex flex-col items-center justify-center text-center gap-6">
-          <div className="bg-primary/10 rounded-full p-6">
-            <CheckCircle2 className="h-16 w-16 text-primary" />
-          </div>
-          <h1 className="text-3xl font-bold">
-            {lang === "ar" ? "تم إرسال طلب عرض السعر!" : "Quote Request Sent!"}
-          </h1>
-          <p className="text-muted-foreground text-lg max-w-md">
-            {lang === "ar"
-              ? "سيتواصل معك فريقنا على رقم هاتفك في أقرب وقت ممكن مع عرض السعر المفصل."
-              : "Our team will contact you on your phone number as soon as possible with a detailed price quote."}
-          </p>
-          <Button onClick={() => setSubmitted(false)} size="lg" className="rounded-xl mt-2">
-            {lang === "ar" ? "طلب عرض سعر جديد" : "Request Another Quote"}
-          </Button>
-        </div>
-      </MainLayout>
-    );
-  }
 
   return (
     <MainLayout>

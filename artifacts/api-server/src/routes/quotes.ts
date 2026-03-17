@@ -68,6 +68,38 @@ router.post("/", async (req, res) => {
   }
 });
 
+router.get("/public/:id", async (req, res) => {
+  try {
+    const id = parseInt(req.params.id);
+    const quotes = await db.select().from(quoteRequestsTable).where(eq(quoteRequestsTable.id, id)).limit(1);
+    if (!quotes[0]) {
+      res.status(404).json({ error: "Not Found", message: "Quote not found" });
+      return;
+    }
+    const items = await db
+      .select({
+        id: quoteItemsTable.id,
+        plantId: quoteItemsTable.plantId,
+        plantNameAr: quoteItemsTable.plantNameAr,
+        plantNameEn: quoteItemsTable.plantNameEn,
+        descriptionAr: quoteItemsTable.descriptionAr,
+        descriptionEn: quoteItemsTable.descriptionEn,
+        quantity: quoteItemsTable.quantity,
+        unitPrice: quoteItemsTable.unitPrice,
+        totalPrice: quoteItemsTable.totalPrice,
+        imageUrl: plantsTable.imageUrl,
+      })
+      .from(quoteItemsTable)
+      .leftJoin(plantsTable, eq(quoteItemsTable.plantId, plantsTable.id))
+      .where(eq(quoteItemsTable.quoteId, id));
+    const { adminNotes, ...publicQuote } = quotes[0] as any;
+    res.json({ ...publicQuote, items });
+  } catch (err) {
+    console.error("Get public quote error:", err);
+    res.status(500).json({ error: "Internal Server Error", message: "Failed to get quote" });
+  }
+});
+
 router.get("/", authenticateToken, requireAdmin, async (_req: AuthRequest, res) => {
   try {
     const quotes = await db.select().from(quoteRequestsTable).orderBy(desc(quoteRequestsTable.createdAt));

@@ -22,6 +22,7 @@ import QuoteDetail from "./pages/admin/QuoteDetail";
 
 // Customer Pages
 import QuotesPage from "./pages/Quotes";
+import QuoteView from "./pages/QuoteView";
 import MyOrders from "./pages/MyOrders";
 
 const queryClient = new QueryClient({
@@ -42,6 +43,7 @@ function Router() {
       <Route path="/plants/:id" component={PlantDetail} />
       <Route path="/order" component={OrderPage} />
       <Route path="/quotes" component={QuotesPage} />
+      <Route path="/quotes/:id" component={QuoteView} />
       <Route path="/login" component={Login} />
       <Route path="/register" component={Register} />
       
