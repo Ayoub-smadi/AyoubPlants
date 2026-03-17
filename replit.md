@@ -71,6 +71,8 @@ artifacts-monorepo/
 - `plants` - Plant inventory (nameAr, nameEn, price, stock, images)
 - `orders` - Customer orders with status tracking
 - `order_items` - Order line items
+- `quote_requests` - Price quote requests from customers
+- `quote_items` - Quote line items
 
 ## API Routes
 

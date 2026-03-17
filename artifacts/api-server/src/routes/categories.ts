@@ -33,7 +33,7 @@ router.post("/", authenticateToken, requireAdmin, async (req: AuthRequest, res) 
 
 router.put("/:id", authenticateToken, requireAdmin, async (req: AuthRequest, res) => {
   try {
-    const id = parseInt(req.params.id);
+    const id = parseInt(String(req.params.id));
     const { nameAr, nameEn, description } = req.body;
     const [category] = await db
       .update(categoriesTable)
@@ -53,7 +53,7 @@ router.put("/:id", authenticateToken, requireAdmin, async (req: AuthRequest, res
 
 router.delete("/:id", authenticateToken, requireAdmin, async (req: AuthRequest, res) => {
   try {
-    const id = parseInt(req.params.id);
+    const id = parseInt(String(req.params.id));
     await db.delete(categoriesTable).where(eq(categoriesTable.id, id));
     res.status(204).send();
   } catch (err) {

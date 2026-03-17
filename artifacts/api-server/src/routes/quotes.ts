@@ -70,7 +70,7 @@ router.post("/", async (req, res) => {
 
 router.get("/public/:id", async (req, res) => {
   try {
-    const id = parseInt(req.params.id);
+    const id = parseInt(String(req.params.id));
     const quotes = await db.select().from(quoteRequestsTable).where(eq(quoteRequestsTable.id, id)).limit(1);
     if (!quotes[0]) {
       res.status(404).json({ error: "Not Found", message: "Quote not found" });
@@ -116,7 +116,7 @@ router.get("/", authenticateToken, requireAdmin, async (_req: AuthRequest, res) 
 
 router.get("/:id", authenticateToken, requireAdmin, async (req: AuthRequest, res) => {
   try {
-    const id = parseInt(req.params.id);
+    const id = parseInt(String(req.params.id));
     const quotes = await db.select().from(quoteRequestsTable).where(eq(quoteRequestsTable.id, id)).limit(1);
     if (!quotes[0]) {
       res.status(404).json({ error: "Not Found", message: "Quote not found" });
@@ -132,7 +132,7 @@ router.get("/:id", authenticateToken, requireAdmin, async (req: AuthRequest, res
 
 router.patch("/:id", authenticateToken, requireAdmin, async (req: AuthRequest, res) => {
   try {
-    const id = parseInt(req.params.id);
+    const id = parseInt(String(req.params.id));
     const { status, adminNotes, items } = req.body;
 
     const updates: Record<string, unknown> = { updatedAt: new Date() };
@@ -177,7 +177,7 @@ router.patch("/:id", authenticateToken, requireAdmin, async (req: AuthRequest, r
 
 router.delete("/:id", authenticateToken, requireAdmin, async (req: AuthRequest, res) => {
   try {
-    const id = parseInt(req.params.id);
+    const id = parseInt(String(req.params.id));
     await db.delete(quoteRequestsTable).where(eq(quoteRequestsTable.id, id));
     res.status(204).send();
   } catch (err) {

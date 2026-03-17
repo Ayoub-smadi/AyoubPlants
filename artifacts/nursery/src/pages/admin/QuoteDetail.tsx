@@ -183,7 +183,7 @@ export default function QuoteDetail() {
           <Send className="h-4 w-4" />
           {lang === "ar" ? "تحديد كـ مُرسَل" : "Mark as Sent"}
         </Button>
-        <Button className="rounded-xl gap-2" onClick={() => saveMutation.mutate()} disabled={saveMutation.isPending}>
+        <Button className="rounded-xl gap-2" onClick={() => saveMutation.mutate(undefined)} disabled={saveMutation.isPending}>
           <Save className="h-4 w-4" />
           {lang === "ar" ? "حفظ التعديلات" : "Save Changes"}
         </Button>

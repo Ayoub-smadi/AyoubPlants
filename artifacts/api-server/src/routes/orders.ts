@@ -117,7 +117,7 @@ router.post("/", optionalAuth, async (req: AuthRequest, res) => {
 
 router.get("/:id", authenticateToken, async (req: AuthRequest, res) => {
   try {
-    const id = parseInt(req.params.id);
+    const id = parseInt(String(req.params.id));
     const orders = await db.select().from(ordersTable).where(eq(ordersTable.id, id)).limit(1);
     if (!orders[0]) {
       res.status(404).json({ error: "Not Found", message: "Order not found" });
@@ -138,7 +138,7 @@ router.get("/:id", authenticateToken, async (req: AuthRequest, res) => {
 
 router.patch("/:id", authenticateToken, requireAdmin, async (req: AuthRequest, res) => {
   try {
-    const id = parseInt(req.params.id);
+    const id = parseInt(String(req.params.id));
     const { status } = req.body;
     if (!status) {
       res.status(400).json({ error: "Bad Request", message: "status is required" });

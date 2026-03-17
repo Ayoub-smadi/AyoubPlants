@@ -62,7 +62,7 @@ router.get("/", async (req, res) => {
 
 router.get("/:id", async (req, res) => {
   try {
-    const id = parseInt(req.params.id);
+    const id = parseInt(String(req.params.id));
     const plants = await db.select().from(plantsTable).where(eq(plantsTable.id, id)).limit(1);
     if (!plants[0]) {
       res.status(404).json({ error: "Not Found", message: "Plant not found" });
@@ -106,7 +106,7 @@ router.post("/", authenticateToken, requireAdmin, async (req: AuthRequest, res) 
 
 router.put("/:id", authenticateToken, requireAdmin, async (req: AuthRequest, res) => {
   try {
-    const id = parseInt(req.params.id);
+    const id = parseInt(String(req.params.id));
     const { nameAr, nameEn, categoryId, descriptionAr, descriptionEn, height, price, stockQuantity, imageUrl, images, featured } = req.body;
     const [plant] = await db.update(plantsTable).set({
       nameAr,
@@ -181,7 +181,7 @@ router.post("/import", authenticateToken, requireAdmin, async (req: AuthRequest,
 
 router.delete("/:id", authenticateToken, requireAdmin, async (req: AuthRequest, res) => {
   try {
-    const id = parseInt(req.params.id);
+    const id = parseInt(String(req.params.id));
     await db.delete(plantsTable).where(eq(plantsTable.id, id));
     res.status(204).send();
   } catch (err) {
@@ -192,7 +192,7 @@ router.delete("/:id", authenticateToken, requireAdmin, async (req: AuthRequest, 
 
 router.patch("/:id/stock", authenticateToken, requireAdmin, async (req: AuthRequest, res) => {
   try {
-    const id = parseInt(req.params.id);
+    const id = parseInt(String(req.params.id));
     const { stockQuantity } = req.body;
     if (stockQuantity == null) {
       res.status(400).json({ error: "Bad Request", message: "stockQuantity is required" });
