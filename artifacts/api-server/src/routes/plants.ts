@@ -134,6 +134,51 @@ router.put("/:id", authenticateToken, requireAdmin, async (req: AuthRequest, res
   }
 });
 
+router.post("/import", authenticateToken, requireAdmin, async (req: AuthRequest, res) => {
+  try {
+    const { plants: plantsData } = req.body;
+    if (!Array.isArray(plantsData) || plantsData.length === 0) {
+      res.status(400).json({ error: "Bad Request", message: "plants array is required and must not be empty" });
+      return;
+    }
+
+    const results: Array<{ index: number; success: boolean; nameEn: string; error?: string }> = [];
+    let successCount = 0;
+
+    for (let i = 0; i < plantsData.length; i++) {
+      const p = plantsData[i];
+      try {
+        if (!p.nameEn || !p.nameAr || p.price == null || p.stockQuantity == null) {
+          results.push({ index: i, success: false, nameEn: p.nameEn || `Row ${i + 2}`, error: "Missing required fields: nameEn, nameAr, price, stockQuantity" });
+          continue;
+        }
+        await db.insert(plantsTable).values({
+          nameEn: String(p.nameEn).trim(),
+          nameAr: String(p.nameAr).trim(),
+          categoryId: p.categoryId ? Number(p.categoryId) : null,
+          descriptionEn: p.descriptionEn ? String(p.descriptionEn).trim() : null,
+          descriptionAr: p.descriptionAr ? String(p.descriptionAr).trim() : null,
+          height: p.height ? Number(p.height) : null,
+          price: Number(p.price),
+          stockQuantity: Number(p.stockQuantity),
+          imageUrl: p.imageUrl ? String(p.imageUrl).trim() : null,
+          images: [],
+          featured: String(p.featured).toLowerCase() === "true",
+        });
+        results.push({ index: i, success: true, nameEn: p.nameEn });
+        successCount++;
+      } catch (err: any) {
+        results.push({ index: i, success: false, nameEn: p.nameEn || `Row ${i + 2}`, error: err.message });
+      }
+    }
+
+    res.status(201).json({ imported: successCount, total: plantsData.length, results });
+  } catch (err) {
+    console.error("Import plants error:", err);
+    res.status(500).json({ error: "Internal Server Error", message: "Failed to import plants" });
+  }
+});
+
 router.delete("/:id", authenticateToken, requireAdmin, async (req: AuthRequest, res) => {
   try {
     const id = parseInt(req.params.id);
