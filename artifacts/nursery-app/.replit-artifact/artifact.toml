@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "Agricultural Nursery"
+version = "1.0.0"
+id = "artifacts/nursery-app"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+localPort = 23778
+name = "web"
+paths = ["/"]
+
+[services.development]
+run = "pnpm --filter @workspace/nursery-app run dev"
+
+[services.env]
+PORT = "23778"
+BASE_PATH = "/"
+
+[services.production]
+build = ["pnpm", "--filter", "@workspace/nursery-app", "run", "build"]
+publicDir = "artifacts/nursery-app/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
