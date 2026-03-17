@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { db } from "@workspace/db";
-import { ordersTable, orderItemsTable, plantsTable, usersTable } from "@workspace/db/schema";
+import { ordersTable, orderItemsTable, plantsTable, usersTable, categoriesTable } from "@workspace/db/schema";
 import { eq, sql } from "drizzle-orm";
 import { authenticateToken, optionalAuth, requireAdmin, type AuthRequest } from "../lib/auth.js";
 
@@ -66,6 +66,18 @@ router.post("/", optionalAuth, async (req: AuthRequest, res) => {
       if (plant.stockQuantity < item.quantity) {
         res.status(400).json({ error: "Bad Request", message: `Insufficient stock for ${plant.nameEn}` });
         return;
+      }
+
+      // Minimum 10 trees per order
+      if (plant.categoryId) {
+        const categoryData = await db.select().from(categoriesTable).where(eq(categoriesTable.id, plant.categoryId)).limit(1);
+        if (categoryData[0] && categoryData[0].nameEn === "Trees" && item.quantity < 10) {
+          res.status(400).json({
+            error: "Bad Request",
+            message: `الحد الأدنى للطلب من الأشجار هو 10. لقد طلبت ${item.quantity} من "${plant.nameAr}". / Minimum order for trees is 10 units.`,
+          });
+          return;
+        }
       }
       const itemTotal = plant.price * item.quantity;
       totalAmount += itemTotal;

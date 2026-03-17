@@ -21,18 +21,21 @@ export const useCartStore = create<CartStore>()(
     (set, get) => ({
       items: [],
       addItem: (plant, quantity = 1) => {
+        const isTree = plant.category?.nameEn === "Trees";
+        const minQty = isTree ? 10 : 1;
+        const safeQty = Math.max(quantity, minQty);
         set((state) => {
           const existingItem = state.items.find((i) => i.plant.id === plant.id);
           if (existingItem) {
             return {
               items: state.items.map((i) =>
                 i.plant.id === plant.id
-                  ? { ...i, quantity: i.quantity + quantity }
+                  ? { ...i, quantity: i.quantity + safeQty }
                   : i
               ),
             };
           }
-          return { items: [...state.items, { plant, quantity }] };
+          return { items: [...state.items, { plant, quantity: safeQty }] };
         });
       },
       removeItem: (plantId) => {
@@ -42,9 +45,12 @@ export const useCartStore = create<CartStore>()(
       },
       updateQuantity: (plantId, quantity) => {
         set((state) => ({
-          items: state.items.map((i) =>
-            i.plant.id === plantId ? { ...i, quantity: Math.max(1, quantity) } : i
-          ),
+          items: state.items.map((i) => {
+            if (i.plant.id !== plantId) return i;
+            const isTree = i.plant.category?.nameEn === "Trees";
+            const minQty = isTree ? 10 : 1;
+            return { ...i, quantity: Math.max(minQty, quantity) };
+          }),
         }));
       },
       clearCart: () => set({ items: [] }),

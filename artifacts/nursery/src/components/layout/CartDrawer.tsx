@@ -85,6 +85,11 @@ export function CartDrawer() {
                         <X className="h-4 w-4" />
                       </button>
                     </div>
+                    {item.plant.category?.nameEn === "Trees" && (
+                      <p className="text-xs text-amber-600 dark:text-amber-400 mt-1 font-medium">
+                        {lang === 'ar' ? '🌳 الحد الأدنى للطلب: 10 أشجار' : '🌳 Min. order: 10 trees'}
+                      </p>
+                    )}
                   </div>
                 </div>
               ))}

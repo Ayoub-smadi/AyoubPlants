@@ -48,6 +48,21 @@ export default function OrderPage() {
   const onSubmit = (values: FormValues) => {
     if (items.length === 0) return;
 
+    // Validate minimum 10 trees
+    const treeViolation = items.find(
+      (i) => i.plant.category?.nameEn === "Trees" && i.quantity < 10
+    );
+    if (treeViolation) {
+      toast({
+        title: lang === 'ar' ? "الحد الأدنى للأشجار" : "Tree Minimum Order",
+        description: lang === 'ar'
+          ? `الحد الأدنى للطلب من الأشجار هو 10 وحدات. "${treeViolation.plant.nameAr}" كميتها الحالية ${treeViolation.quantity}.`
+          : `Minimum order for trees is 10 units. "${treeViolation.plant.nameEn}" has only ${treeViolation.quantity}.`,
+        variant: "destructive",
+      });
+      return;
+    }
+
     createOrder.mutate({
       data: {
         ...values,
