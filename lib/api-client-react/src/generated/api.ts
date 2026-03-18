@@ -52,7 +52,7 @@ type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
  * @summary Health check
  */
 export const getHealthCheckUrl = () => {
-  return `/api/healthz`;
+  return `/backend/healthz`;
 };
 
 export const healthCheck = async (
@@ -65,7 +65,7 @@ export const healthCheck = async (
 };
 
 export const getHealthCheckQueryKey = () => {
-  return [`/api/healthz`] as const;
+  return [`/backend/healthz`] as const;
 };
 
 export const getHealthCheckQueryOptions = <
@@ -127,7 +127,7 @@ export function useHealthCheck<
  * @summary Register a new user
  */
 export const getRegisterUrl = () => {
-  return `/api/auth/register`;
+  return `/backend/auth/register`;
 };
 
 export const register = async (
@@ -213,7 +213,7 @@ export const useRegister = <
  * @summary Login
  */
 export const getLoginUrl = () => {
-  return `/api/auth/login`;
+  return `/backend/auth/login`;
 };
 
 export const login = async (
@@ -299,7 +299,7 @@ export const useLogin = <
  * @summary Get current user
  */
 export const getGetMeUrl = () => {
-  return `/api/auth/me`;
+  return `/backend/auth/me`;
 };
 
 export const getMe = async (options?: RequestInit): Promise<User> => {
@@ -310,7 +310,7 @@ export const getMe = async (options?: RequestInit): Promise<User> => {
 };
 
 export const getGetMeQueryKey = () => {
-  return [`/api/auth/me`] as const;
+  return [`/backend/auth/me`] as const;
 };
 
 export const getGetMeQueryOptions = <
@@ -362,7 +362,7 @@ export function useGetMe<
  * @summary Get all categories
  */
 export const getGetCategoriesUrl = () => {
-  return `/api/categories`;
+  return `/backend/categories`;
 };
 
 export const getCategories = async (
@@ -375,7 +375,7 @@ export const getCategories = async (
 };
 
 export const getGetCategoriesQueryKey = () => {
-  return [`/api/categories`] as const;
+  return [`/backend/categories`] as const;
 };
 
 export const getGetCategoriesQueryOptions = <
@@ -437,7 +437,7 @@ export function useGetCategories<
  * @summary Create a category (Admin only)
  */
 export const getCreateCategoryUrl = () => {
-  return `/api/categories`;
+  return `/backend/categories`;
 };
 
 export const createCategory = async (
@@ -523,7 +523,7 @@ export const useCreateCategory = <
  * @summary Update a category (Admin only)
  */
 export const getUpdateCategoryUrl = (id: number) => {
-  return `/api/categories/${id}`;
+  return `/backend/categories/${id}`;
 };
 
 export const updateCategory = async (
@@ -610,7 +610,7 @@ export const useUpdateCategory = <
  * @summary Delete a category (Admin only)
  */
 export const getDeleteCategoryUrl = (id: number) => {
-  return `/api/categories/${id}`;
+  return `/backend/categories/${id}`;
 };
 
 export const deleteCategory = async (
@@ -705,8 +705,8 @@ export const getGetPlantsUrl = (params?: GetPlantsParams) => {
   const stringifiedParams = normalizedParams.toString();
 
   return stringifiedParams.length > 0
-    ? `/api/plants?${stringifiedParams}`
-    : `/api/plants`;
+    ? `/backend/plants?${stringifiedParams}`
+    : `/backend/plants`;
 };
 
 export const getPlants = async (
@@ -720,7 +720,7 @@ export const getPlants = async (
 };
 
 export const getGetPlantsQueryKey = (params?: GetPlantsParams) => {
-  return [`/api/plants`, ...(params ? [params] : [])] as const;
+  return [`/backend/plants`, ...(params ? [params] : [])] as const;
 };
 
 export const getGetPlantsQueryOptions = <
@@ -788,7 +788,7 @@ export function useGetPlants<
  * @summary Create a plant (Admin only)
  */
 export const getCreatePlantUrl = () => {
-  return `/api/plants`;
+  return `/backend/plants`;
 };
 
 export const createPlant = async (
@@ -874,7 +874,7 @@ export const useCreatePlant = <
  * @summary Get a plant by ID
  */
 export const getGetPlantUrl = (id: number) => {
-  return `/api/plants/${id}`;
+  return `/backend/plants/${id}`;
 };
 
 export const getPlant = async (
@@ -888,7 +888,7 @@ export const getPlant = async (
 };
 
 export const getGetPlantQueryKey = (id: number) => {
-  return [`/api/plants/${id}`] as const;
+  return [`/backend/plants/${id}`] as const;
 };
 
 export const getGetPlantQueryOptions = <
@@ -959,7 +959,7 @@ export function useGetPlant<
  * @summary Update a plant (Admin only)
  */
 export const getUpdatePlantUrl = (id: number) => {
-  return `/api/plants/${id}`;
+  return `/backend/plants/${id}`;
 };
 
 export const updatePlant = async (
@@ -1046,7 +1046,7 @@ export const useUpdatePlant = <
  * @summary Delete a plant (Admin only)
  */
 export const getDeletePlantUrl = (id: number) => {
-  return `/api/plants/${id}`;
+  return `/backend/plants/${id}`;
 };
 
 export const deletePlant = async (
@@ -1130,7 +1130,7 @@ export const useDeletePlant = <
  * @summary Update plant stock (Admin only)
  */
 export const getUpdatePlantStockUrl = (id: number) => {
-  return `/api/plants/${id}/stock`;
+  return `/backend/plants/${id}/stock`;
 };
 
 export const updatePlantStock = async (
@@ -1217,7 +1217,7 @@ export const useUpdatePlantStock = <
  * @summary Get orders (Admin gets all, Customer gets own)
  */
 export const getGetOrdersUrl = () => {
-  return `/api/orders`;
+  return `/backend/orders`;
 };
 
 export const getOrders = async (options?: RequestInit): Promise<Order[]> => {
@@ -1228,7 +1228,7 @@ export const getOrders = async (options?: RequestInit): Promise<Order[]> => {
 };
 
 export const getGetOrdersQueryKey = () => {
-  return [`/api/orders`] as const;
+  return [`/backend/orders`] as const;
 };
 
 export const getGetOrdersQueryOptions = <
@@ -1282,7 +1282,7 @@ export function useGetOrders<
  * @summary Create an order
  */
 export const getCreateOrderUrl = () => {
-  return `/api/orders`;
+  return `/backend/orders`;
 };
 
 export const createOrder = async (
@@ -1368,7 +1368,7 @@ export const useCreateOrder = <
  * @summary Get an order by ID
  */
 export const getGetOrderUrl = (id: number) => {
-  return `/api/orders/${id}`;
+  return `/backend/orders/${id}`;
 };
 
 export const getOrder = async (
@@ -1382,7 +1382,7 @@ export const getOrder = async (
 };
 
 export const getGetOrderQueryKey = (id: number) => {
-  return [`/api/orders/${id}`] as const;
+  return [`/backend/orders/${id}`] as const;
 };
 
 export const getGetOrderQueryOptions = <
@@ -1453,7 +1453,7 @@ export function useGetOrder<
  * @summary Update order status (Admin only)
  */
 export const getUpdateOrderStatusUrl = (id: number) => {
-  return `/api/orders/${id}`;
+  return `/backend/orders/${id}`;
 };
 
 export const updateOrderStatus = async (
@@ -1540,7 +1540,7 @@ export const useUpdateOrderStatus = <
  * @summary Get sales summary statistics (Admin only)
  */
 export const getGetReportSummaryUrl = () => {
-  return `/api/reports/summary`;
+  return `/backend/reports/summary`;
 };
 
 export const getReportSummary = async (
@@ -1553,7 +1553,7 @@ export const getReportSummary = async (
 };
 
 export const getGetReportSummaryQueryKey = () => {
-  return [`/api/reports/summary`] as const;
+  return [`/backend/reports/summary`] as const;
 };
 
 export const getGetReportSummaryQueryOptions = <
@@ -1615,7 +1615,7 @@ export function useGetReportSummary<
  * @summary Get daily sales for the last 30 days (Admin only)
  */
 export const getGetDailySalesUrl = () => {
-  return `/api/reports/daily`;
+  return `/backend/reports/daily`;
 };
 
 export const getDailySales = async (
@@ -1628,7 +1628,7 @@ export const getDailySales = async (
 };
 
 export const getGetDailySalesQueryKey = () => {
-  return [`/api/reports/daily`] as const;
+  return [`/backend/reports/daily`] as const;
 };
 
 export const getGetDailySalesQueryOptions = <
@@ -1690,7 +1690,7 @@ export function useGetDailySales<
  * @summary Get most sold plants (Admin only)
  */
 export const getGetTopPlantsUrl = () => {
-  return `/api/reports/top-plants`;
+  return `/backend/reports/top-plants`;
 };
 
 export const getTopPlants = async (
@@ -1703,7 +1703,7 @@ export const getTopPlants = async (
 };
 
 export const getGetTopPlantsQueryKey = () => {
-  return [`/api/reports/top-plants`] as const;
+  return [`/backend/reports/top-plants`] as const;
 };
 
 export const getGetTopPlantsQueryOptions = <
@@ -1765,7 +1765,7 @@ export function useGetTopPlants<
  * @summary Request a presigned upload URL
  */
 export const getRequestUploadUrlUrl = () => {
-  return `/api/storage/uploads/request-url`;
+  return `/backend/storage/uploads/request-url`;
 };
 
 export const requestUploadUrl = async (
@@ -1851,7 +1851,7 @@ export const useRequestUploadUrl = <
  * @summary Get all users (Admin only)
  */
 export const getGetUsersUrl = () => {
-  return `/api/users`;
+  return `/backend/users`;
 };
 
 export const getUsers = async (options?: RequestInit): Promise<User[]> => {
@@ -1862,7 +1862,7 @@ export const getUsers = async (options?: RequestInit): Promise<User[]> => {
 };
 
 export const getGetUsersQueryKey = () => {
-  return [`/api/users`] as const;
+  return [`/backend/users`] as const;
 };
 
 export const getGetUsersQueryOptions = <
